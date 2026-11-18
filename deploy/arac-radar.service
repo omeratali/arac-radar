@@ -1,0 +1,21 @@
+[Unit]
+Description=Arac Radar 7/24 Otomobil Tarama Sunucusu
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/arac-radar
+EnvironmentFile=-/opt/arac-radar/.env
+Environment=HOST=0.0.0.0
+Environment=PORT=8765
+Environment=ALLOW_REMOTE=1
+Environment=TZ=Europe/Istanbul
+ExecStart=/usr/bin/xvfb-run --auto-servernum --server-args="-screen 0 1366x768x24" /usr/bin/node /opt/arac-radar/server.mjs
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

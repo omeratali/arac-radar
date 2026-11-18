@@ -1,0 +1,8 @@
+data/
+dist-pages/
+node_modules/
+*.log
+.env
+.git/
+*.cmd
+tarama-durumu.png

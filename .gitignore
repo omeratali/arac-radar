@@ -1,0 +1,7 @@
+data/
+dist-pages/
+node_modules/
+*.log
+.env
+.DS_Store
+thumbs.db

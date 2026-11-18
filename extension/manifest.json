@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Araç Radar — Canlı Tarayıcı Köprüsü",
+  "version": "1.1.0",
+  "description": "Açık sahibinden.com vasıta liste ve detay sayfalarını yerel Araç Radar sunucusuna (127.0.0.1:8765) otomatik aktarır.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://*.sahibinden.com/*",
+    "http://127.0.0.1:8765/*",
+    "http://localhost:8765/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.sahibinden.com/otomobil*",
+        "https://www.sahibinden.com/arazi-suv-pickup*",
+        "https://www.sahibinden.com/ilan/vasita-*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

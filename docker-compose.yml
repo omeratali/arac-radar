@@ -1,0 +1,22 @@
+services:
+  arac-radar:
+    build: .
+    container_name: arac-radar
+    restart: unless-stopped
+    shm_size: "1gb"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PORT: ${PORT:-8765}
+      HOST: ${HOST:-0.0.0.0}
+      ALLOW_REMOTE: ${ALLOW_REMOTE:-1}
+      AUTH_USER: ${AUTH_USER:-admin}
+      AUTH_PASS: ${AUTH_PASS:-}
+      PROXY_URL: ${PROXY_URL:-}
+      TZ: ${TZ:-Europe/Istanbul}
+      CHROME_EXECUTABLE: /usr/bin/chromium
+    ports:
+      - "${PORT:-8765}:8765"
+    volumes:
+      - ./data:/app/data

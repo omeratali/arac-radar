@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-labelledby="title">
+  <title id="title">Araç Radar</title>
+  <rect width="64" height="64" rx="18" fill="#183f35"/>
+  <g stroke="#d8ee9d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15 27c0-9.4 7.6-17 17-17"/>
+    <path d="M22 27a10 10 0 0 1 10-10"/>
+    <path d="m16 39 4.4-8a4 4 0 0 1 3.5-2.1h15.2a4 4 0 0 1 3.5 2.1l4.4 8"/>
+    <path d="M15.5 39h32v10h-32z"/>
+    <path d="M21 44h2m17 0h2M20 49v4m23-4v4"/>
+  </g>
+  <circle cx="32" cy="24" r="2" fill="#d8ee9d"/>
+</svg>

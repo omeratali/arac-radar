@@ -1,0 +1,104 @@
+name: Araç Radar 7/24 Otomatik Tarayıcı (Kartsız)
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      crawl_minutes:
+        description: 'Tarama süresi (dakika)'
+        required: false
+        default: '12'
+        type: string
+      max_jobs:
+        description: 'Tur başına azami sayfa/detay sayısı'
+        required: false
+        default: '100'
+        type: string
+      gap_seconds:
+        description: 'İstekler arası minimum bekleme (saniye)'
+        required: false
+        default: '3'
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: arac-radar-crawler-db
+  cancel-in-progress: false
+
+jobs:
+  crawl-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Kodu indir
+        uses: actions/checkout@v4
+
+      - name: Node.js 24 kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Chromium, Xvfb ve Node bağımlılıklarını yükle
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends chromium xvfb xauth fonts-liberation
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install --no-audit --no-fund
+
+      - name: Veritabanını (radar.sqlite) GitHub Release'den geri yükle
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p data
+          if gh release view db-snapshot >/dev/null 2>&1; then
+            echo "Mevcut veritabanı yedeği GitHub Release'den indiriliyor..."
+            if gh release download db-snapshot -p "radar.sqlite.gz" -D data/ --clobber; then
+              gunzip -f data/radar.sqlite.gz
+              ls -lh data/radar.sqlite
+            fi
+          else
+            echo "İlk çalıştırma: db-snapshot release oluşturuluyor..."
+            gh release create db-snapshot --title "Araç Radar Canlı Veritabanı" --notes "GitHub Actions tarafından otomatik güncellenen SQLite veritabanı." || true
+          fi
+
+      - name: Arka plan tarayıcısını çalıştır ve GitHub Pages çıktısını üret
+        env:
+          CHROME_EXECUTABLE: /usr/bin/chromium
+          CRAWL_MINUTES: ${{ inputs.crawl_minutes || '12' }}
+          CRAWL_MAX_JOBS: ${{ inputs.max_jobs || '100' }}
+          GAP_SECONDS: ${{ inputs.gap_seconds || '3' }}
+          PROXY_URL: ${{ secrets.PROXY_URL }}
+          TZ: Europe/Istanbul
+        run: |
+          xvfb-run --auto-servernum --server-args="-screen 0 1366x768x24" node ci-crawl-runner.mjs
+
+      - name: Güncel radar.sqlite.gz dosyasını GitHub Release'e kaydet
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f data/radar.sqlite ]; then
+            gzip -6 -c data/radar.sqlite > data/radar.sqlite.gz
+            ls -lh data/radar.sqlite.gz
+            gh release upload db-snapshot data/radar.sqlite.gz --clobber
+          fi
+
+      - name: GitHub Pages ortamını hazırla
+        uses: actions/configure-pages@v5
+
+      - name: Statik panel dosyasını yükle
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist-pages
+
+      - name: GitHub Pages'e yayınla
+        id: deployment
+        uses: actions/deploy-pages@v4

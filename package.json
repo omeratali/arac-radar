@@ -1,0 +1,20 @@
+{
+  "name": "arac-radar-local",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "setup-reader": "node reader-runtime.cjs",
+    "ci:crawl": "node ci-crawl-runner.mjs",
+    "db:compress": "node deploy/compress-db.mjs",
+    "test": "node --test tests.mjs",
+    "test:reader": "node --test reader-tests.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.62.1"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

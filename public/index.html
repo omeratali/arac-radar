@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111316">
+  <title>Araç Radar · Aradığın aracı keşfet</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/radar-mark-blue.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css?v=20261102_05">
+  <link rel="stylesheet" href="/ui.css?v=20261105_01">
+  <link rel="stylesheet" href="/experience.css?v=20261105_01">
+  <link rel="stylesheet" href="/source-filters.css?v=20261105_02">
+  <script src="/app.js?v=20261105_filter01" defer></script>
+</head>
+<body data-view="listings">
+<div class="filter-backdrop" id="filterBackdrop" hidden></div>
+
+<aside class="sidebar">
+  <a class="brand" href="/" aria-label="Araç Radar ana sayfa">
+    <img class="brand-wordmark" src="/assets/radar-wordmark-blue.svg" alt="Araç Radar">
+  </a>
+  <div class="nav-label">KEŞFET</div>
+  <nav aria-label="Ana menü">
+    <button class="nav-item active" data-view="listings"><span class="nav-icon"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-grid"></use></svg></span><span>İlanlar</span><span class="nav-count" id="navCount">0</span></button>
+    <button class="nav-item" data-view="opportunities"><span class="nav-icon"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-bolt"></use></svg></span><span>Fırsatlar</span></button>
+    <button class="nav-item" data-view="live"><span class="nav-icon"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-radar"></use></svg></span><span>Canlı akış</span><span class="live-dot"></span></button>
+    <button class="nav-item" data-view="favorites"><span class="nav-icon"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-heart"></use></svg></span><span>Favoriler</span><span class="nav-count" id="favoriteCount">0</span></button>
+    <button class="nav-item" data-view="valuation"><span class="nav-icon"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-tag"></use></svg></span><span>Değerleme</span></button>
+    <button class="nav-item" data-view="system"><span class="nav-icon"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-gear"></use></svg></span><span>Tarama</span></button>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="computer-symbol"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-shield"></use></svg></div>
+    <div>Bu bilgisayar<small id="connectionText">Sunucuya bağlanılıyor</small></div>
+    <span id="serverDot" class="status-dot"></span>
+  </div>
+</aside>
+
+<div class="workspace">
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="mobile-brand"><img src="/assets/radar-mark-blue.svg" alt=""><strong>Araç Radar</strong></span>
+      <div class="breadcrumb">Araç Radar <span>/</span> <strong id="breadcrumb">İlanlar</strong></div>
+      <div class="stitch-telemetry-ribbon" id="stitchTelemetryRibbon">
+        <span class="stitch-pulse-dot"><span></span><span></span></span>
+        <span class="stitch-telemetry-highlight" id="stBotStatus">CANLI BOT: AKTİF</span>
+        <span class="stitch-telemetry-divider">|</span>
+        <span id="stTotalListings">124.750 İLAN</span>
+        <span class="stitch-telemetry-divider">|</span>
+        <span class="stitch-telemetry-cyan" id="stBotPing">PING: 21ms</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="local-chip"><i></i> <span class="local-chip-text">BU BİLGİSAYARDA</span></span>
+      <span class="date" id="today"></span>
+      <span class="avatar" aria-label="Kişisel çalışma alanı">AR</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-heading">
+      <div>
+        <p class="eyebrow">PİYASAYI TAKİP ET. FIRSATI YAKALA.</p>
+        <h1 id="pageTitle">Aradığın araç burada.</h1>
+        <p class="page-subtitle" id="pageSubtitle">İlanları keşfet, emsalleri karşılaştır, sana uygun aracı bul.</p>
+      </div>
+      <button class="button button-outline" id="sourceShortcut"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-radar"></use></svg> Tarama durumu</button>
+    </section>
+
+    <div id="sourceBanner" class="source-banner" role="status">
+      <span class="banner-symbol"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-radar"></use></svg></span>
+      <div>
+        <strong id="bannerTitle">Veritabanı Hazırlanıyor</strong>
+        <p id="bannerMessage">Yerel kayıtlar ve kaynak durumu yükleniyor...</p>
+      </div>
+      <button class="button button-small" id="bannerAction">Durumu gör →</button>
+    </div>
+
+    <section class="stats" aria-label="İlan özeti">
+      <article class="stat">
+        <div class="stat-label">TOPLANAN İLAN <svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-car"></use></svg></div>
+        <strong id="totalStat">--</strong>
+        <small>Gerçek kaynaktan kaydedilen</small>
+      </article>
+      <article class="stat">
+        <div class="stat-label">TARANAN SAYFA / GÖREV <svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-list"></use></svg></div>
+        <strong id="pagesStat">--</strong>
+        <small id="pagesHint">Keşfedilen ilk işler</small>
+      </article>
+      <article class="stat">
+        <div class="stat-label">FİYAT HAREKETİ <svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chart"></use></svg></div>
+        <strong id="changesStat">--</strong>
+        <small>Gözlenen fiyat değişimleri</small>
+      </article>
+      <article class="stat tick-stat">
+        <div class="stat-label">SONRAKİ KONTROL <svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-clock"></use></svg></div>
+        <strong><span id="countdown">30</span><em> sn</em></strong>
+        <small id="tickHint">Sunucuda 30 saniyelik döngü</small>
+        <progress id="tickProgress" max="30" value="0" aria-label="Sonraki kontrole kalan süre"></progress>
+      </article>
+      <article class="stat ui-fresh-stat"><div class="stat-label">SON 24 SAAT <svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-clock"></use></svg></div><strong id="freshStat">--</strong><small>Yeni kaydedilen araçlar</small></article>
+    </section>
+
+    <section id="listSection" class="view-section market-layout">
+<aside id="advancedFilters" class="advanced-filters source-filter-panel" role="region" aria-labelledby="filterPanelTitle" tabindex="-1" hidden>
+  <div class="source-filter-heading"><h2 id="filterPanelTitle">Filtrele</h2><button type="button" class="icon-button" id="closeFilterSheet" aria-label="Filtreleri kapat"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-close"></use></svg></button></div>
+  <div class="source-filter-mode"><label><input type="checkbox" id="filterAutoResults" checked> Seçtikçe sonuç getir</label><span id="filterPendingNote" role="status" hidden>Seçimlerin hazır. Sonuçları güncellemek için Ara'ya bas.</span></div>
+  <div class="filter-sheet-body">
+    <details class="filter-group source-filter-group"  open><summary>Kategori<span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><div class="source-category-root">Vasıta</div><div class="source-category-breadcrumbs" id="sourceCategoryBreadcrumbs"></div><label class="source-category-search"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-search"></use></svg><input id="sourceCategorySearch" type="search" placeholder="Marka ara" aria-label="Kategoride ara" autocomplete="off"></label><div id="sourceCategoryList" class="source-category-list" aria-live="polite"></div><input type="hidden" id="brandFilter" value=""><input type="hidden" id="modelFilter" value=""><input type="hidden" id="trimFilter" value=""><span id="sheetCategoryDisplay" hidden></span></div></details>
+    <details class="filter-group source-filter-group"  open><summary>Adres<span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><label class="source-select-label">İl<select id="cityFilter" aria-label="İl"><option value="">İl seçiniz</option></select></label><label class="source-select-label">İlçe<select id="districtFilter" aria-label="İlçe" disabled><option value="">Önce il seçiniz</option></select></label></div></details>
+    <details class="filter-group source-filter-group"  open><summary>Fiyat <span class="source-unit">TL</span><span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><div class="source-range"><input type="number" id="priceMin" min="0"  placeholder="min" aria-label="En az fiyat (TL)"><span>—</span><input type="number" id="priceMax" min="0"  placeholder="max" aria-label="En fazla fiyat (TL)"></div></div></details>
+    <details class="filter-group source-filter-group"  open><summary>Yıl<span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><div class="source-range"><input type="number" id="yearMin" min="1900" max="2100" placeholder="min" aria-label="En az model yılı"><span>—</span><input type="number" id="yearMax" min="1900" max="2100" placeholder="max" aria-label="En fazla model yılı"></div></div></details>
+    <details class="filter-group source-filter-group"  open><summary>Yakıt<span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><div class="source-check-list" id="fuelChipGroup"><button type="button" class="filter-chip-btn source-check" data-fuel-val="Benzin" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Benzin</span><small data-facet-count="fuel:Benzin"></small></button><button type="button" class="filter-chip-btn source-check" data-fuel-val="Dizel" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Dizel</span><small data-facet-count="fuel:Dizel"></small></button><button type="button" class="filter-chip-btn source-check" data-fuel-val="LPG" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Benzin & LPG</span><small data-facet-count="fuel:LPG"></small></button><button type="button" class="filter-chip-btn source-check" data-fuel-val="Hibrit" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Hibrit</span><small data-facet-count="fuel:Hibrit"></small></button><button type="button" class="filter-chip-btn source-check" data-fuel-val="Elektrik" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Elektrik</span><small data-facet-count="fuel:Elektrik"></small></button></div></div></details>
+    <details class="filter-group source-filter-group"  open><summary>Vites<span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><div class="source-check-list" id="gearChipGroup"><button type="button" class="filter-chip-btn source-check" data-gear-val="Manuel" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Manuel</span><small data-facet-count="gear:Manuel"></small></button><button type="button" class="filter-chip-btn source-check" data-gear-val="Yarı Otomatik" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Yarı Otomatik</span><small data-facet-count="gear:Yarı Otomatik"></small></button><button type="button" class="filter-chip-btn source-check" data-gear-val="Otomatik" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Otomatik</span><small data-facet-count="gear:Otomatik"></small></button></div></div></details>
+    <details class="filter-group source-filter-group"  open><summary>KM<span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><div class="source-range"><input type="number" id="kmMin" min="0"  placeholder="min" aria-label="En az kilometre"><span>—</span><input type="number" id="kmMax" min="0"  placeholder="max" aria-label="En fazla kilometre"></div></div></details>
+    <details class="filter-group source-filter-group"  ><summary>Kasa Tipi<span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><div class="source-check-list" id="bodyChipGroup"><button type="button" class="filter-chip-btn source-check" data-body-val="Sedan" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Sedan</span><small data-facet-count="body:Sedan"></small></button><button type="button" class="filter-chip-btn source-check" data-body-val="Hatchback" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Hatchback</span><small data-facet-count="body:Hatchback"></small></button><button type="button" class="filter-chip-btn source-check" data-body-val="SUV" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Arazi / SUV</span><small data-facet-count="body:SUV"></small></button><button type="button" class="filter-chip-btn source-check" data-body-val="Station Wagon" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Station Wagon</span><small data-facet-count="body:Station Wagon"></small></button><button type="button" class="filter-chip-btn source-check" data-body-val="Coupe" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Coupe</span><small data-facet-count="body:Coupe"></small></button><button type="button" class="filter-chip-btn source-check" data-body-val="Cabrio" role="checkbox" aria-checked="false"><span class="source-checkbox" aria-hidden="true"></span><span>Cabrio</span><small data-facet-count="body:Cabrio"></small></button></div></div></details>
+    <details class="filter-group source-filter-group"  ><summary>Renk<span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><select id="colorFilter" aria-label="Renk"><option value="">Tüm renkler</option></select></div></details>
+    <details class="filter-group source-filter-group"  ><summary>Kimden<span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><select id="sellerFilter" aria-label="Kimden"><option value="">Tümü</option><option value="Sahibinden">Sahibinden</option><option value="Galeriden">Galeriden</option><option value="Yetkili Bayiden">Yetkili bayiden</option></select></div></details>
+    <details class="filter-group source-filter-group"  ><summary>İlan Tarihi<span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><select id="publishedWithin" aria-label="İlan tarihi"><option value="">Tümü</option><option value="1">Son 24 saat</option><option value="3">Son 3 gün</option><option value="7">Son 7 gün</option><option value="15">Son 15 gün</option><option value="30">Son 30 gün</option></select><p class="source-filter-help">Kaynak ilanın yayın tarihine göre.</p></div></details>
+    <div class="source-radar-label">ARAÇ RADAR FİLTRELERİ</div>
+    <details class="filter-group source-filter-group"  ><summary>Hatasız araç seçimi<span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><div class="condition-preset"><label class="preset-label"><input type="checkbox" id="hatasizQuickSelect"><span><strong>İlan bilgisine göre hatasız</strong><small>Boyasız, değişensiz, sıfır tramer ve bilinen risk işareti yok.</small></span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-shield"></use></svg></label><span class="phase-pill" id="conditionFilterModePill">STANDART FİLTRE</span><p class="filter-help">İlan verisine dayanır; ekspertiz yerine geçmez. Eksik bilgiler temiz kabul edilmez.</p></div></div></details>
+    <details class="filter-group source-filter-group"  ><summary>Fırsat ve kullanım<span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="source-group-content"><label class="source-select-label">En az fırsat (%)<input type="number" id="oppMin" min="-50" max="90" placeholder="Örn. 10"></label><label class="source-select-label">En fazla yıllık km<input type="number" id="yearlyKmMax" min="0" placeholder="Sınır yok"></label></div></details>
+    <details class="filter-group source-filter-group radar-filter-group"><summary><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-car"></use></svg> Boya ve hasar <span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="filter-grid-fields"><label>En fazla boyalı parça
+              <select id="maxPaintedSelect">
+                <option value="13" selected>Sınır yok</option>
+                <option value="0">0 (Boyasız)</option>
+                <option value="1">En fazla 1 boyalı</option>
+                <option value="2">En fazla 2 boyalı</option>
+                <option value="3">En fazla 3 boyalı</option>
+                <option value="4">En fazla 4 boyalı</option>
+                <option value="5">En fazla 5 boyalı</option>
+              </select>
+            </label><label>En fazla değişen
+              <select id="maxChangedSelect">
+                <option value="13" selected>Sınır yok</option>
+                <option value="0">0 (Değişensiz)</option>
+                <option value="1">En fazla 1 değişen</option>
+                <option value="2">En fazla 2 değişen</option>
+                <option value="3">En fazla 3 değişen</option>
+              </select>
+            </label><label>Tramer üst tutarı (TL)<input type="number" id="tramerMax" min="0" placeholder="Sınır yok"></label></div><div class="filter-checkbox-grid"><label><input type="checkbox" id="paintlessOnly"> Boyasız</label><label><input type="checkbox" id="changelessOnly"> Değişensiz</label><label><input type="checkbox" id="zeroTramerOnly"> Tramer tutarı 0 TL olan</label><label><input type="checkbox" id="noHeavyDamage"> Ağır hasar kaydı olmayan</label></div></details>
+          <details class="filter-group source-filter-group radar-filter-group"><summary><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-shield"></use></svg> İlan tercihleri <span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><div class="filter-checkbox-grid"><label><input type="checkbox" id="hideRisk"> Riskli ilanları gizle</label><label><input type="checkbox" id="hideFault"> Arıza / masraf işaretini gizle</label><label><input type="checkbox" id="hideWarning"> Uyarılı ilanları gizle</label><label><input type="checkbox" id="hideEnded" checked> Satılan / süresi dolanları gizle</label><label><input type="checkbox" id="hideIncomplete"> Eksik bilgi / şemayı gizle</label><label><input type="checkbox" id="fiveStarOnly"> Yalnız 5 yıldızlı ilanlar</label></div></details>
+          <details class="filter-group source-filter-group radar-filter-group"><summary><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-sliders"></use></svg> Parça seçimi <span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><p class="filter-help">Seçtiğin parçalar boyasız veya değişensiz olsun.</p><h4>Boyasız olmasını istediğin parçalar</h4><div id="unpaintedPartsWrap" class="parts-wrap"></div><h4>Değişensiz olmasını istediğin parçalar</h4><div id="unchangedPartsWrap" class="parts-wrap"></div></details>
+          <details class="filter-group source-filter-group radar-filter-group"><summary><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-tag"></use></svg> Rozet seçimi <span><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chevron-down"></use></svg></span></summary><label class="badge-mode-label">Seçilen rozetleri<select id="badgeFilterMode">
+                      <option value="exclude" selected>Gizle</option>
+                      <option value="include">Yalnız bunları göster</option>
+                    </select></label><div id="badgeListWrap" class="parts-wrap"></div></details>
+  </div>
+  <div class="filter-sheet-footer"><button class="button button-primary" id="applyFiltersBtn" type="button">Ara</button><span id="sourceFilterResultCount" role="status">İlanlar yükleniyor…</span><button class="text-button" id="clearFilters" type="button">Tümünü temizle</button></div>
+</aside>
+<div class="market-results">
+      <div class="section-top">
+        <div class="tabs">
+          <button class="tab active" id="allTab">Tüm ilanlar <span id="resultsCount">--</span></button>
+          <button class="tab" id="onlyFreshTab">Son 24 saat</button>
+          <button class="tab" id="monthOppTab" hidden>Son 30 gün</button>
+        </div>
+        <div class="section-top-right">
+          <label id="oppThresholdWrap" class="quiet" hidden>Fırsat eşiği:
+            <select id="oppThresholdSelect" aria-label="Fırsat eşiği">
+              <option value="5">En az %5</option>
+              <option value="10" selected>En az %10 (Varsayılan)</option>
+              <option value="15">En az %15</option>
+              <option value="20">En az %20</option>
+            </select>
+          </label>
+          <span class="quiet" id="checkedTime">Veriler alınıyor...</span>
+          
+        </div>
+      </div>
+
+<div class="search-panel source-result-search"><div class="discovery-toolbar"><label class="search"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-search"></use></svg><input id="searchInput" type="search" placeholder="Kelime veya ilan no ile ara" aria-label="İlan ara"><kbd>/</kbd></label><button class="button filter-trigger" id="filterToggle" aria-label="Filtreleri aç" aria-controls="advancedFilters" aria-expanded="false"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-sliders"></use></svg> Filtrele <span id="filterCount" hidden>0</span></button><label class="sort-control"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-list"></use></svg><select id="sortSelect" aria-label="Sıralama"><option value="new">En yeni ilanlar</option><option value="oppDesc">En yüksek fırsat</option><option value="priceAsc">Fiyat: düşükten yükseğe</option><option value="priceDesc">Fiyat: yüksekten düşüğe</option><option value="km">En düşük kilometre</option></select></label></div><div class="quick-chips-bar" id="quickChipsBar" hidden aria-label="Hızlı filtreler">
+        <button type="button" class="quick-chip active" data-quick-filter="all">Tümü</button>
+        <button type="button" class="quick-chip" data-quick-filter="opp10"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-bolt"></use></svg> %10+ fırsat</button>
+        <button type="button" class="quick-chip" data-quick-filter="hatasiz"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-shield"></use></svg> Hatasız</button>
+        <button type="button" class="quick-chip" data-quick-filter="tavan_orig"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-check"></use></svg> Tavan orijinal</button>
+        <button type="button" class="quick-chip" data-quick-filter="paintless"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-check"></use></svg> Boyasız</button>
+        <button type="button" class="quick-chip" data-quick-filter="price_drop"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-chart"></use></svg> Fırsata göre sırala</button>
+        <button type="button" class="quick-chip" data-quick-filter="clean_tramer"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-shield"></use></svg> Ağır hasarsız</button>
+        <button type="button" class="quick-chip" data-quick-filter="autoGear"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-gear"></use></svg> Otomatik</button>
+        <button type="button" class="quick-chip" data-quick-filter="diesel">Dizel</button>
+        <button type="button" class="quick-chip" data-quick-filter="fresh"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-clock"></use></svg> Son 24 saat</button>
+      </div><div id="categoryTreeBar" hidden></div></div>
+      <!-- Sonuç ve Sayfalama Bilgi Çubuğu (Toplam & Gösterilen Sayı Netliği) -->
+      <div class="results-bar" id="resultsBar">
+        <div class="results-left">
+          <span class="results-range-text" id="resultsRangeText">İlanlar yükleniyor…</span>
+          <span class="results-page-badge" id="resultsPageBadge">Sayfa 1</span>
+        </div>
+        <div class="results-right">
+          <div class="stitch-view-toggle" id="stitchViewToggle" aria-label="Görünüm modu">
+            <button type="button" class="stitch-view-btn active" data-view-mode="table" title="Tablo görünümü" aria-label="Tablo görünümü">
+              <svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-list"></use></svg>
+              <span>Tablo</span>
+            </button>
+            <button type="button" class="stitch-view-btn" data-view-mode="grid" title="Kart görünümü" aria-label="Kart görünümü">
+              <svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-grid"></use></svg>
+              <span>Kartlar</span>
+            </button>
+          </div>
+          <label class="page-size-label">
+            <span>Göster:</span>
+            <select id="pageSizeSelect" aria-label="Sayfa başına ilan sayısı">
+              <option value="12">12 İlan</option>
+              <option value="24">24 İlan</option>
+              <option value="48" selected>48 İlan</option>
+              <option value="96">96 İlan</option>
+              <option value="200">200 İlan</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <!-- Aktif Filtre Etiketleri (Tek tek kaldırma ve temizleme) -->
+      <div class="active-tags-bar" id="activeTagsBar" hidden></div>
+
+      <!-- Borsa Trader Tablo Görünümü (Stitch AI Design) -->
+      <div id="listingTableWrap" class="stitch-table-container">
+        <table class="stitch-table" id="traderTable">
+          <thead>
+            <tr>
+              <th class="st-col-check"><input type="checkbox" id="selectAllCheckbox" title="Tümünü seç / kaldır"></th>
+              <th class="st-thumb-cell">GÖRSEL</th>
+              <th>ARAÇ VE PAKET</th>
+              <th>KM / KONUM</th>
+              <th>ARAÇ DURUMU</th>
+              <th style="text-align:right">İLAN FİYATI</th>
+              <th style="text-align:center">EMSAL KARŞILAŞTIRMASI</th>
+              <th style="text-align:right">FİYAT FARKI</th>
+              <th style="text-align:center">DETAY</th>
+            </tr>
+          </thead>
+          <tbody id="traderTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- İlan Kartları Izgarası -->
+      <div id="listingGrid" class="listing-grid" hidden></div>
+
+      <!-- Boş Liste Paneli -->
+      <div id="listEmpty" class="empty-panel" hidden>
+        <div class="radar-art" aria-hidden="true">
+          <span class="radar-ring r1"></span><span class="radar-ring r2"></span><span class="radar-ring r3"></span><span class="radar-sweep"></span>
+          <svg viewBox="0 0 100 60"><path d="M16 40V27l10-4 10-14h31l14 16 8 5v14H16m15-21h40M39 12l-7 11m28-11 8 11M16 34h12m48 0h12"/><circle cx="32" cy="43" r="8"/><circle cx="74" cy="43" r="8"/></svg>
+          <span class="radar-point"></span>
+        </div>
+        <span class="empty-kicker">ARAÇ RADAR</span>
+        <h2 id="emptyTitle">İlk ilanlarını bekliyoruz.</h2>
+        <p id="emptyText">Kaynak bağlantısı tamamlandığında ilanlar burada görünecek.<br>Yeni ilanlar geldikçe bu alan güncellenir.</p>
+        <button class="button button-primary" id="emptyAction">Kaynağı bağla <span>↗</span></button>
+        <div class="empty-flow"><span>01 <b>Genel tarama</b></span><i>→</i><span>02 <b>Kaydet</b></span><i>→</i><span>03 <b>30 sn kontrol</b></span></div>
+      </div>
+
+      <!-- Sayfalama -->
+      <div id="pagination" class="pagination" hidden>
+        <button class="button button-outline pagination-btn" id="prevPage">← Önceki</button>
+        <span id="pageNumber" class="page-number-text"></span>
+        <button class="button button-outline pagination-btn" id="nextPage">Sonraki →</button>
+      </div>
+</div>
+    </section>
+
+    <!-- Canlı Akış Bölümü -->
+    <section id="liveSection" class="view-section" hidden>
+      <div class="panel-heading">
+        <div>
+          <h2>Canlı Akış · Fırsat Bildirimleri ve Fiyat Düşüşleri</h2>
+          <span class="quiet" id="livePulseInfo">Canlı ekran yoklaması: 30 sn · Yeni ilan ve fiyat düşüşü</span>
+        </div>
+        <div class="tabs">
+          <button class="tab active" data-live-tab="all" id="liveTabAll">Tümü</button>
+          <button class="tab" data-live-tab="new" id="liveTabNew">Yeni İlan &amp; Fırsat</button>
+          <button class="tab" data-live-tab="price_drop" id="liveTabDrop">Fiyat Düşüşleri ↘</button>
+        </div>
+      </div>
+      <div class="advanced-filters" style="margin-bottom:14px">
+        <label>Canlı bildirim fırsat eşiği (%)<input type="number" id="liveMinOpp" min="-20" max="30" value="0" placeholder="-20 ile 30 arası"></label>
+        <label><input type="checkbox" id="liveNoHeavyDamage"> Ağır hasarsız</label>
+        <label><input type="checkbox" id="livePaintless"> İlan bilgisine göre hatasız</label>
+        <button class="button button-outline" id="saveLiveSettings" type="button">Canlı Eşiği Kaydet</button>
+      </div>
+      <div id="eventList"></div>
+    </section>
+
+    <!-- Değerleme Bölümü -->
+    <section id="valuationSection" class="view-section valuation-section" hidden>
+      <div>
+        <span class="eyebrow">İLAN NO VEYA KENDİN SEÇ</span>
+        <h2>Aracının fiyat seviyesine bak.</h2>
+        <p class="muted">Yalnızca toplanan gerçek ilanlarla hesaplanır (%15 Alınabilir / %7 Satılabilir / %0 İlan Ortalaması).</p>
+        <form id="ilanNoForm" style="margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.08)">
+          <label>İlan Numarası veya Linki ile Değerle
+            <input type="text" id="ilanNoInput" placeholder="Örn. 1348311663 veya sahibinden ilan linki" aria-label="İlan numarası veya linki">
+          </label>
+          <button class="button button-outline" type="submit">İlanı Kaynaktan Çek ve Değerle →</button>
+        </form>
+        <form id="valuationForm">
+          <label>Marka<select id="valuationBrand" required><option value="">Marka seç</option></select></label>
+          <label class="combobox-label">Model
+            <div class="combobox-wrapper">
+              <input type="text" id="valuationModel" required placeholder="Model seç veya ara (örn. i4, x1)" autocomplete="off" spellcheck="false" aria-label="Model" aria-autocomplete="list">
+              <button type="button" class="combobox-arrow" tabindex="-1" aria-label="Modelleri listele">▾</button>
+              <div class="combobox-dropdown" id="valuationModelDropdown" hidden role="listbox"></div>
+            </div>
+          </label>
+          <label>Paket / Motor / Versiyon (opsiyonel)<input type="text" id="valuationTrim" placeholder="Örn. 1.6 TDI Comfortline, 320i M Sport"></label>
+          <label>Model yılı<input type="number" id="valuationYear" required min="1985" max="2027" placeholder="Örn. 2020"></label>
+          <label>Kilometre (opsiyonel)<input type="number" id="valuationKm" min="0" placeholder="Örn. 85000"></label>
+          <label>Vites<select id="valuationGear"><option value="">Farketmez</option><option>Otomatik</option><option>Manuel</option><option>Yarı Otomatik</option></select></label>
+          <label>Kaput / Tavan Durumu<select id="valuationRoofHood"><option value="orijinal">Orijinal</option><option value="boyali">Boyalı</option><option value="degisen">Değişen</option></select></label>
+          <label>Diğer Boyalı / Değişen Parça Sayısı<input type="number" id="valuationPaintedCount" min="0" max="12" value="0"></label>
+          <label>Tramer Tutarı (TL)<input type="number" id="valuationTramer" min="0" value="0" placeholder="0 TL"></label>
+          <label><input type="checkbox" id="valuationSunroof"> Sunroof / Cam Tavan var</label>
+          <button class="button button-primary" type="submit">Fiyat seviyesini hesapla →</button>
+        </form>
+        <div style="margin-top:20px">
+          <span class="eyebrow">GEÇMİŞ DEĞERLEMELER</span>
+          <div id="valuationHistoryList" class="history" style="margin-top:8px"></div>
+        </div>
+      </div>
+      <div class="valuation-result" id="valuationResult">
+        <span class="large-symbol">◎</span>
+        <h3>Önce gerçek veri.</h3>
+        <p>En az 5 karşılaştırılabilir ilan toplandıktan sonra ortanca ilan fiyatı ile %15 Alınabilir, %7 Satılabilir ve %0 İlan Ortalaması seviyeleri hesaplanır.</p>
+      </div>
+    </section>
+
+    <!-- Tarama Yönetim Bölümü -->
+    <section id="systemSection" class="view-section" hidden>
+      <div class="system-grid">
+        <article class="system-card source-card">
+          <div class="source-logo">s<span>.</span></div>
+          <span class="eyebrow">BİRİNCİL İLAN KAYNAĞI</span>
+          <h2>sahibinden.com</h2>
+          <p id="sourceMessage">Bağlantı kontrol ediliyor.</p>
+          <span class="phase-pill" id="phasePill">BEKLENİYOR</span>
+          <div class="source-actions">
+            <button class="button button-primary" id="resumeCrawl">Arka plan okuyucusunu yeniden dene</button>
+            <button class="button button-outline" id="turboCrawl">⚡ Turbo tarama (50/sayfa)</button>
+            <button class="button button-outline" id="verifyCrawl">Doğrulama penceresini aç</button>
+            <button class="text-button" id="pauseCrawl">Taramayı duraklat</button>
+          </div>
+          <p class="micro">Okuyucu kalıcı oturum profiliyle arka planda çalışır; doğrulama çerezlerini korur. Gerekirse doğrulama penceresini açabilir veya <code>arac-radar/extension</code> klasöründeki tarayıcı eklentisiyle açık sekmeden canlı veri aktarabilirsin.</p>
+        </article>
+        <article class="system-card">
+          <div class="panel-heading"><h2>Tarama durumu</h2><span class="dot-label"><i></i> PC üzerinde</span></div>
+          <div class="pipeline">
+            <div><span>01</span><div><h3>İlk genel tarama</h3><p id="baselineText">Kategoriler ve ilanlar sırayla keşfedilir.</p></div><b id="baselineBadge">Bekliyor</b></div>
+            <div><span>02</span><div><h3>Detayları kaydet</h3><p>Fiyat ve araç bilgileri yerel veri tabanında tutulur.</p></div><b id="detailsCount">0 ilan</b></div>
+            <div><span>03</span><div><h3>30 saniyelik kontrol</h3><p>İlk tarama bitince liste sayfaları yeniden okunur. Yeni kimlikler kaydedilir; kontroller üst üste binmez.</p></div><b id="tickCount">0 başarılı</b></div>
+          </div>
+          <dl class="system-facts">
+            <div><dt>Tek sayfada gerçek veri kontrolü</dt><dd id="sourcePageCheck">Bekliyor</dd></div>
+            <div><dt>Veri okuyucusu</dt><dd id="readerName">Arka plan · Chromium</dd></div>
+            <div><dt>Okuyucu durumu</dt><dd id="readerState">Hazırlanıyor</dd></div>
+            <div><dt>JavaScript</dt><dd id="readerJavascript">Açık</dd></div>
+            <div><dt>Bekleyen iş</dt><dd id="pendingJobs">0</dd></div>
+            <div><dt>Fiyat bandı derin tarama</dt><dd id="deepCursorStatus">Aktif (50 ilan/sayfa)</dd></div>
+            <div><dt>Son başarılı kaynak okuması</dt><dd id="lastSuccess">Henüz yok</dd></div>
+            <div><dt>Son kaynak denemesi</dt><dd id="lastAttemptAt">Henüz yok</dd></div>
+            <div><dt>Kaynak yanıtı</dt><dd id="lastHttpStatus">—</dd></div>
+            <div><dt>Son tamamlanan yeni ilan kontrolü</dt><dd id="lastCheckAt">Henüz yok</dd></div>
+            <div><dt>Son kontrolde yeni ilan</dt><dd id="lastNewCount">0</dd></div>
+            <div><dt>Kaynak bekleme süresi</dt><dd id="retryAt">—</dd></div>
+          </dl>
+        </article>
+        <article class="system-card full-width">
+          <div class="speed-setting">
+            <div>
+              <h3>Tarama hızı</h3>
+              <p>Kaynak istekleri arasındaki minimum bekleme. Her tamamlanan kontrolden 30 saniye sonra yenisi başlar. Çok sayfalı bir kontrol bu aralık yüzünden daha uzun sürebilir; her ilanın 30 saniyede bulunması garanti edilmez.</p>
+            </div>
+            <form id="speedForm">
+              <label class="sr-only" for="gapSeconds">İstek aralığı</label>
+              <select id="gapSeconds">
+                <option value="3">3 saniye (Turbo)</option>
+                <option value="5">5 saniye</option>
+                <option value="10">10 saniye</option>
+                <option value="30">30 saniye</option>
+                <option value="60">1 dakika</option>
+                <option value="120">2 dakika</option>
+                <option value="300">5 dakika</option>
+              </select>
+              <button class="button button-primary">Kaydet</button>
+            </form>
+          </div>
+        </article>
+        <article class="system-card full-width">
+          <div class="speed-setting">
+            <div>
+              <h3>İlan Aktarma (Link, İlan No veya HTML Kaynağı)</h3>
+              <p>Herhangi bir <code>sahibinden.com</code> <b>ilan linkini</b>, <b>ilan numarasını (123456789)</b> veya <b>sayfa kaynak kodunu (HTML)</b> yapıştırarak doğrudan sisteme aktarabilirsin. Ayrıca <code>arac-radar/extension</code> tarayıcı eklentisiyle gezdiğin ilanları otomatik aktarabilirsin.</p>
+            </div>
+            <form id="bridgeForm">
+              <input id="bridgeHtml" type="text" placeholder="sahibinden.com ilan linki (https://...), ilan no veya HTML kaynağı yapıştır…" aria-label="İlan linki veya HTML kaynağı">
+              <button class="button button-outline" type="submit">İlanı Aktar →</button>
+            </form>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      <span><i class="tiny-dot"></i> Bu bilgisayarda çalışıyor · Gerçek kaynak modu</span>
+      <span>Kontroller arası bekleme: 30 sn <span class="footer-divider">/</span> Son veri zamanı ilanda gösterilir</span>
+    </footer>
+  </main>
+</div>
+
+<dialog id="detailDialog" aria-labelledby="detailTitle">
+  <div class="dialog-top">
+    <span class="detail-brand"><img src="/assets/radar-mark-blue.svg" alt=""> İlan detayı</span>
+    <button class="icon-button" id="closeDetail" aria-label="Detayı kapat"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-close"></use></svg></button>
+  </div>
+  <div id="detailContent"></div>
+</dialog>
+
+<dialog id="compareDialog">
+  <div class="dialog-top">
+    <span>İLAN KARŞILAŞTIRMA</span>
+    <button class="icon-button" id="closeCompare" aria-label="Karşılaştırmayı kapat"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-close"></use></svg></button>
+  </div>
+  <div id="compareContent"></div>
+</dialog>
+
+<div id="compareBar" class="stitch-compare-dock" hidden>
+  <div class="st-dock-left">
+    <div class="st-dock-badge">
+      <span class="stitch-pulse-dot"><span></span><span></span></span>
+      <span id="compareCountBadge"><strong id="compareCount">0</strong> ARAÇ SEÇİLDİ</span>
+    </div>
+    <div class="st-dock-chips-list" id="compareChipsList"></div>
+  </div>
+  <div class="st-dock-mid">
+    <div style="display:flex;flex-direction:column">
+      <span class="st-dock-stat-label">Kombine Kâr Potansiyeli</span>
+      <span class="st-dock-stat-val" id="dockCombinedProfit">+0 TL</span>
+    </div>
+  </div>
+  <div class="st-dock-right">
+    <button id="clearCompare" class="text-button" type="button" style="color:var(--st-text-muted);font-size:12px">Temizle</button>
+    <button id="compareButton" class="st-dock-compare-btn" type="button" disabled>
+      <svg class="ui-icon" aria-hidden="true" style="width:16px;height:16px"><use href="/assets/ui-icons.svg#icon-sliders"></use></svg>
+      <span>İki Aracı Kıyasla (Fark Matrisi) →</span>
+    </button>
+  </div>
+</div>
+
+<!-- Sahibinden Tarzı Kategori & Model Seçim Modalı -->
+<div id="categoryModal" class="category-modal" role="dialog" aria-modal="true" aria-labelledby="catModalTitle" hidden>
+  <div class="cat-modal-backdrop" id="catModalBackdrop"></div>
+  <div class="cat-modal-dialog">
+    <div class="cat-modal-header">
+      <div class="cat-modal-title-row">
+        <div>
+          <span class="eyebrow" style="margin:0">KATEGORİ &amp; MODEL</span>
+          <h3 id="catModalTitle" style="margin:2px 0 0;font-size:16px">Marka, Seri ve Model Seçimi</h3>
+        </div>
+        <button type="button" class="icon-button" id="closeCatModal" aria-label="Kapat"><svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-close"></use></svg></button>
+      </div>
+      <div class="cat-search-box">
+        <svg class="ui-icon" aria-hidden="true"><use href="/assets/ui-icons.svg#icon-search"></use></svg>
+        <input type="search" id="catSearchInput" placeholder="Marka, seri, model veya paket ara (örn: i4, x1 msport, 320i)..." autocomplete="off" spellcheck="false" aria-label="Model ara">
+        <button type="button" id="catSearchClear" class="cat-clear-btn" hidden aria-label="Aramayı temizle">✕</button>
+      </div>
+      <div class="cat-breadcrumbs" id="catBreadcrumbs">
+        <button type="button" class="cat-crumb active" data-crumb-level="root">Tüm Markalar</button>
+      </div>
+    </div>
+    <div class="cat-modal-body" id="catModalBody">
+      <div id="catItemsList" class="cat-items-list"></div>
+    </div>
+    <div class="cat-modal-footer">
+      <button type="button" class="button button-outline" id="catModalClearBtn">Tüm Modeller (Sıfırla)</button>
+      <button type="button" class="button button-primary" id="catModalDoneBtn">Tamam</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

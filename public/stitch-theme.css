@@ -1,0 +1,662 @@
+/* Google Stitch Design System for Araç Radar Arbitraj Terminali */
+
+:root {
+  --st-bg: #0a0e18;
+  --st-surface: #0f131d;
+  --st-surface-low: #141a26;
+  --st-surface-mid: #1c2436;
+  --st-surface-high: #252f44;
+  --st-border: #263345;
+  --st-border-light: #36465d;
+  --st-emerald: #10b981;
+  --st-emerald-bright: #34d399;
+  --st-emerald-glow: rgba(16, 185, 129, 0.18);
+  --st-cyan: #38bdf8;
+  --st-amber: #f59e0b;
+  --st-crimson: #ef4444;
+  --st-text: #e2e8f0;
+  --st-text-muted: #94a3b8;
+  --st-font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  --st-font-display: 'Space Grotesk', Inter, system-ui, sans-serif;
+}
+
+/* ================= LIVE SCANNER TELEMETRY RIBBON ================= */
+.stitch-telemetry-ribbon {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 12px;
+  background: var(--st-surface-low);
+  border: 1px solid var(--st-border);
+  border-radius: 6px;
+  font-family: var(--st-font-mono);
+  font-size: 11px;
+  color: var(--st-text-muted);
+  letter-spacing: 0.02em;
+}
+
+.stitch-pulse-dot {
+  position: relative;
+  display: inline-flex;
+  width: 8px;
+  height: 8px;
+}
+
+.stitch-pulse-dot span:first-child {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: var(--st-emerald);
+  opacity: 0.75;
+  animation: st-ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.stitch-pulse-dot span:last-child {
+  position: relative;
+  display: inline-flex;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  background-color: var(--st-emerald);
+}
+
+@keyframes st-ping {
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.stitch-telemetry-divider {
+  color: var(--st-border-light);
+}
+
+.stitch-telemetry-highlight {
+  color: var(--st-emerald-bright);
+  font-weight: 700;
+}
+
+.stitch-telemetry-cyan {
+  color: var(--st-cyan);
+  font-weight: 600;
+}
+
+/* ================= VIEW MODE TOGGLE ================= */
+.stitch-view-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: var(--st-surface-low);
+  border: 1px solid var(--st-border);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.stitch-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--st-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.stitch-view-btn .ui-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.stitch-view-btn:hover {
+  color: var(--st-text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.stitch-view-btn.active {
+  background: var(--st-surface-high);
+  color: var(--st-emerald-bright);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* ================= TRADER BORSA TABLE ================= */
+.stitch-table-container {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--st-border);
+  border-radius: 10px;
+  background: var(--st-surface);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  margin-bottom: 24px;
+}
+
+.stitch-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+  color: var(--st-text);
+}
+
+.stitch-table thead tr {
+  background: var(--st-surface-low);
+  border-bottom: 1px solid var(--st-border);
+  font-family: var(--st-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--st-text-muted);
+  text-transform: uppercase;
+}
+
+.stitch-table th {
+  padding: 10px 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.stitch-table tbody tr {
+  border-bottom: 1px solid rgba(38, 51, 69, 0.6);
+  transition: background-color 0.12s ease;
+  cursor: pointer;
+}
+
+.stitch-table tbody tr:hover {
+  background-color: var(--st-surface-mid);
+}
+
+.stitch-table td {
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+
+/* Checkbox column */
+.st-col-check {
+  width: 38px;
+  text-align: center;
+}
+
+.st-col-check input[type="checkbox"] {
+  cursor: pointer;
+  accent-color: var(--st-emerald);
+  width: 16px;
+  height: 16px;
+}
+
+/* Thumbnail */
+.st-thumb-cell {
+  width: 64px;
+}
+
+.st-thumb-wrap {
+  position: relative;
+  width: 60px;
+  height: 44px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--st-border);
+  background: var(--st-surface-low);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.st-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.stitch-table tbody tr:hover .st-thumb-img {
+  transform: scale(1.08);
+}
+
+.st-thumb-tag {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-family: var(--st-font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px 0 0 0;
+  line-height: 1.2;
+}
+
+.st-thumb-tag.is-flash {
+  background: var(--st-emerald);
+  color: #042f1e;
+}
+
+.st-thumb-tag.is-new {
+  background: var(--st-cyan);
+  color: #042436;
+}
+
+/* Vehicle Cell */
+.st-vehicle-cell {
+  min-width: 220px;
+}
+
+.st-vehicle-title {
+  font-family: var(--st-font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.st-gear-tag {
+  font-family: var(--st-font-mono);
+  font-size: 10px;
+  background: var(--st-surface-high);
+  color: var(--st-text-muted);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.st-vehicle-sub {
+  font-size: 12px;
+  color: var(--st-text-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 280px;
+}
+
+/* Mileage & Location */
+.st-km-cell {
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+.st-km-val {
+  font-family: var(--st-font-mono);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--st-text);
+}
+
+.st-city-val {
+  font-size: 11px;
+  color: var(--st-text-muted);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* Body / Damage Badges */
+.st-damage-cell {
+  min-width: 200px;
+}
+
+.st-chips-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.st-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--st-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.st-badge-clean {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: var(--st-emerald-bright);
+}
+
+.st-badge-warning {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+
+.st-badge-danger {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #f87171;
+}
+
+.st-badge-neutral {
+  background: var(--st-surface-low);
+  border: 1px solid var(--st-border);
+  color: var(--st-text-muted);
+}
+
+/* Price Column */
+.st-price-cell {
+  text-align: right;
+  min-width: 130px;
+  white-space: nowrap;
+}
+
+.st-price-val {
+  font-family: var(--st-font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.st-price-drop {
+  font-family: var(--st-font-mono);
+  font-size: 11px;
+  color: var(--st-crimson);
+  text-decoration: line-through;
+  margin-top: 1px;
+}
+
+/* Visual Gauge Meter */
+.st-meter-cell {
+  min-width: 200px;
+}
+
+.st-meter-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--st-font-mono);
+  font-size: 10px;
+  color: var(--st-text-muted);
+  margin-bottom: 3px;
+}
+
+.st-meter-bar {
+  position: relative;
+  width: 100%;
+  height: 7px;
+  border-radius: 4px;
+  background: var(--st-surface-low);
+  border: 1px solid var(--st-border);
+  overflow: hidden;
+  display: flex;
+}
+
+.st-meter-part-green {
+  width: 35%;
+  background: linear-gradient(90deg, #059669, #10b981);
+}
+
+.st-meter-part-mid {
+  width: 35%;
+  background: var(--st-surface-high);
+}
+
+.st-meter-part-red {
+  width: 30%;
+  background: rgba(239, 68, 68, 0.4);
+}
+
+.st-meter-needle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #ffffff;
+  box-shadow: 0 0 6px #ffffff;
+  border-radius: 1px;
+  transform: translateX(-50%);
+  transition: left 0.3s ease;
+}
+
+.st-meter-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--st-font-mono);
+  font-size: 9px;
+  color: var(--st-text-muted);
+  margin-top: 2px;
+  opacity: 0.8;
+}
+
+/* Profit Margin Badge */
+.st-profit-cell {
+  text-align: right;
+  min-width: 140px;
+  white-space: nowrap;
+}
+
+.st-profit-val {
+  font-family: var(--st-font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--st-emerald-bright);
+  letter-spacing: -0.02em;
+}
+
+.st-profit-pill {
+  display: inline-block;
+  margin-top: 2px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid var(--st-emerald);
+  color: var(--st-emerald-bright);
+  font-family: var(--st-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.st-profit-neutral {
+  color: var(--st-text-muted);
+  font-size: 11px;
+  font-family: var(--st-font-mono);
+}
+
+/* Actions */
+.st-action-cell {
+  text-align: center;
+  min-width: 100px;
+  white-space: nowrap;
+}
+
+.st-action-btn {
+  padding: 5px 12px;
+  background: var(--st-emerald);
+  color: #032517;
+  border: 0;
+  border-radius: 6px;
+  font-family: var(--st-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+}
+
+.st-action-btn:hover {
+  background: var(--st-emerald-bright);
+  transform: translateY(-1px);
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.4);
+}
+
+.st-ext-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 8px;
+  background: transparent;
+  color: var(--st-text-muted);
+  border: 1px solid var(--st-border);
+  border-radius: 6px;
+  margin-left: 4px;
+  transition: all 0.15s ease;
+}
+
+.st-ext-btn:hover {
+  color: #fff;
+  border-color: var(--st-cyan);
+}
+
+/* ================= STITCH BOTTOM COMPARE DOCK ================= */
+.stitch-compare-dock {
+  position: fixed;
+  bottom: 0;
+  left: 224px;
+  right: 0;
+  z-index: 60;
+  padding: 12px 34px;
+  background: rgba(15, 19, 29, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--st-border);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stitch-compare-dock[hidden] {
+  display: none !important;
+}
+
+.st-dock-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.st-dock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--st-surface-low);
+  border: 1px solid var(--st-border);
+  border-radius: 6px;
+  font-family: var(--st-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--st-emerald-bright);
+  white-space: nowrap;
+}
+
+.st-dock-chips-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 0;
+}
+
+.st-dock-car-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  background: var(--st-surface-mid);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 6px;
+  font-size: 12px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.st-dock-car-chip strong {
+  color: var(--st-emerald-bright);
+  font-family: var(--st-font-mono);
+}
+
+.st-dock-car-chip button {
+  background: transparent;
+  border: 0;
+  color: var(--st-text-muted);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.st-dock-car-chip button:hover {
+  color: #fff;
+}
+
+.st-dock-mid {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-left: 1px solid var(--st-border);
+  border-right: 1px solid var(--st-border);
+  padding: 0 20px;
+}
+
+.st-dock-stat-label {
+  font-family: var(--st-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  color: var(--st-text-muted);
+  text-transform: uppercase;
+}
+
+.st-dock-stat-val {
+  font-family: var(--st-font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--st-emerald-bright);
+  letter-spacing: -0.02em;
+}
+
+.st-dock-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.st-dock-compare-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: var(--st-emerald);
+  color: #032517;
+  border: 0;
+  border-radius: 6px;
+  font-family: var(--st-font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+}
+
+.st-dock-compare-btn:hover {
+  background: var(--st-emerald-bright);
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+}
+
+@media (max-width: 1024px) {
+  .stitch-compare-dock {
+    left: 0;
+    padding: 10px 16px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .st-dock-mid {
+    border: 0;
+    padding: 4px 0;
+  }
+}
